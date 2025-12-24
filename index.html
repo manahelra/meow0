@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مريم | Special Edition</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --accent: #ff2d55;
+            --main-bg: #0d0d12;
+            --card-glass: rgba(20, 20, 25, 0.8);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--main-bg);
+            background-image: 
+                radial-gradient(circle at top right, rgba(255, 45, 85, 0.15), transparent 400px),
+                radial-gradient(circle at bottom left, rgba(88, 86, 214, 0.15), transparent 400px);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Cairo', sans-serif;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        /* كرت احترافي جداً */
+        .card {
+            width: 380px;
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 35px;
+            padding: 50px 30px;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            letter-spacing: -0.5px;
+        }
+
+        .btn-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        button {
+            all: unset;
+            cursor: pointer;
+            padding: 18px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            font-size: 1.1rem;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* الزر الاحترافي عند التمرير */
+        button:hover:not(#no-btn) {
+            background: #fff;
+            color: #000;
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(255, 255, 255, 0.1);
+        }
+
+        .primary-btn {
+            background: var(--accent) !important;
+            border: none !important;
+            color: white !important;
+            box-shadow: 0 10px 20px rgba(255, 45, 85, 0.3);
+        }
+
+        #no-btn {
+            color: #555;
+            border-color: transparent;
+        }
+
+        #cat-gif {
+            position: fixed;
+            bottom: -250px;
+            left: 20px;
+            width: 160px;
+            transition: all 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1;
+        }
+
+        .final-emoji {
+            font-size: 5rem;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card animate__animated animate__zoomIn" id="mainCard">
+    <div id="wrapper">
+        <h1 id="title">انتِ مريم ؟</h1>
+        <div class="btn-stack" id="btnArea">
+            <button class="primary-btn" onclick="nav(1, 'yes')">ايوا انا مريم</button>
+            <button onclick="nav(1, 'who')">مين مريم ؟</button>
+            <button onclick="nav(1, 'no')">لا</button>
+        </div>
+    </div>
+</div>
+
+<img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJtZzZqcXo1Nnk1bmZ4NjZ4bmZ4bmZ4bmZ4bmZ4bmZ4bmZ4bmZ4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/3oriO0OEd9QIDdllqo/giphy.gif" id="cat-gif">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+    const title = document.getElementById('title');
+    const btnArea = document.getElementById('btnArea');
+    const cat = document.getElementById('cat-gif');
+
+    function nav(step, choice) {
+        gsap.to("#wrapper", {opacity: 0, y: 15, duration: 0.2, onComplete: () => {
+            logic(step, choice);
+            gsap.to("#wrapper", {opacity: 1, y: 0, duration: 0.4});
+        }});
+    }
+
+    function logic(step, choice) {
+        if (step === 1) {
+            if (choice === 'no') {
+                title.innerText = "لعاد اقلبي وجهك ✋";
+                btnArea.innerHTML = '<button class="primary-btn" onclick="location.reload()">رجوع</button>';
+            } else if (choice === 'who') {
+                title.innerText = "مريوم هي عيوني و ضيها، هو في زيها ؟";
+                btnArea.innerHTML = '<button class="primary-btn" onclick="location.reload()">مياو 🐾</button>';
+            } else if (choice === 'yes') {
+                title.innerText = "يا زين مريم بس.. طيب تحبيني ؟";
+                btnArea.innerHTML = `
+                    <button class="primary-btn" onclick="nav(2, 'love')">طبعا احبك وكثير</button>
+                    <button onclick="nav(2, 'yep')">يب</button>
+                    <button id="no-btn" onmouseover="escape(this)">لا</button>
+                `;
+            }
+        } else if (step === 2) {
+            if (choice === 'yep') {
+                cat.style.bottom = '20px';
+                title.innerText = "يعني عدم المؤاخذة اضغطي الي فوق 🙄";
+            } else if (choice === 'love') {
+                cat.style.bottom = '-250px';
+                title.innerText = "مو قد حبي لك والله.. بدك هديتك ؟";
+                btnArea.innerHTML = '<button class="primary-btn animate__animated animate__pulse animate__infinite" onclick="nav(3)">ياريت</button>';
+            }
+        } else if (step === 3) {
+            title.innerText = "انا هديتك شو متوقعة يعني، هو في زيي ؟";
+            btnArea.innerHTML = '<div class="final-emoji animate__animated animate__bounceIn">😎</div>';
+        }
+    }
+
+    function escape(btn) {
+        const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+        const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+        btn.style.position = 'fixed';
+        gsap.to(btn, { left: x, top: y, duration: 0.3, ease: "power2.out" });
+    }
+</script>
+</body>
+</html>
